@@ -1,0 +1,42 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-1">
+            <input
+            type="text"
+            class="my-search-box"
+            (keydown.enter)="$event.preventDefault()"
+            placeholder="Search Location"
+            type="text"
+            #search
+            />
+            <google-map 
+            height="600px" 
+            width="1000px" 
+            [center]="center" 
+            [zoom]="zoom"
+            [options]="options">
+                <map-marker [position]="center"></map-marker>
+                <map-marker #marker="mapMarker" 
+                *ngFor="let markerPosition of markerPositions"
+                [position]="markerPosition.position"
+                [label]="markerPosition.label"
+                [options]="markerOptions"
+                (mapClick)="openInfoWindow(marker, markerPosition.info)"
+                >
+                </map-marker>
+            <map-info-window>
+                <div *ngIf="info != null">
+                    <p><b>{{ info.name }}</b></p>
+                    <p>{{ info.address }}</p>
+                <button type="button" [routerLink]="['/toilets', info.name]">View Details</button>
+                </div>
+            </map-info-window>
+            </google-map>
+        </div>
+    </div>
+</div>
+
+
+
+
+

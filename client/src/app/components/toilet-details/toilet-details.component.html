@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="row" *ngIf="retrievedToilet">
+        <div class="col-md-8 col-md-offset-2">
+            <app-review-edit *ngIf="isActivated" [review]="reviewForModal" (close)="onClose($event)"></app-review-edit>
+            <img src="https://pride.kindness.sg/wp-content/uploads/2018/01/singaporekindnessmovement_thepride_singapore_world_class_washrooms_toilet.jpg" height="300" width="400">
+            <h3>{{ retrievedToilet.name }}</h3>
+            <p>Rating: {{ retrievedToilet.count ? retrievedToilet.average : 'Not rated yet' }}</p>
+            <p>{{ retrievedToilet.address }}</p>
+            <button class="btn btn-primary" type="button" (click)="onWriteAReview()">Write a review</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <p *ngIf="retrievedReviews.length < 1 && !isFetchingReviews">No reviews available</p>
+            <ul class="list-group" *ngIf="retrievedReviews.length >= 1 && !isFetchingReviews">
+                <li class="list-group-item clearfix" *ngFor="let review of retrievedReviews">
+                    <div class="pull-left">
+                        <h4>{{ review.email }}</h4>
+                        <p>{{ review.rating }} <img src="/assets/images/star.png"> {{ review.submittedDate | date:'longDate'}}</p>
+                        <p>{{ review.comment }}</p>
+                    </div>
+                    <div class="pull-right" *ngIf="user?.email === review.email">
+                        <div class="btn-group" appDropdown>
+                            <button type="button" class="btn btn-primary dropdown-toggle">Manage Review <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a style="cursor: pointer;" (click)="onEdit(review)">Edit Review</a></li>
+                                <li><a style="cursor: pointer;" (click)="onDelete(review.id!)">Delete Review</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
